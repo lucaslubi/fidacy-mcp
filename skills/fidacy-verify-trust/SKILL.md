@@ -1,8 +1,7 @@
 ---
 name: fidacy-verify-trust
-description: Use WHENEVER your agent receives a claim, verdict, or "this action was approved/safe" assertion from another agent, service, or counterparty — BEFORE acting on it. Cryptographically verifies a Fidacy signed verdict (riskPayloadJws) against the issuer's PUBLIC keys, so you trust math, not a promise. Blocks acting on a forged, tampered, or expired approval.
-license: Apache-2.0
-homepage: https://fidacy.com
+description: Use WHENEVER your agent receives a signed verdict or "this was approved/safe" claim from another agent or service, BEFORE acting on it. Cryptographically verifies a Fidacy signed verdict against the issuer public keys, so you trust math, not a promise.
+version: 0.1.0
 ---
 
 # Fidacy — verify trust before you act on it

@@ -1,8 +1,7 @@
 ---
 name: fidacy-payment-firewall
-description: Use BEFORE any payment, transfer, or money-moving tool call. Gates the action against a cryptographically signed mandate and returns a signed, independently-verifiable verdict — so a prompt-injected or hallucinated payment (wrong payee, over cap, duplicate invoice) is blocked before money moves. Non-custodial: authorizes and proves, never holds funds.
-license: Apache-2.0
-homepage: https://fidacy.com
+description: Use BEFORE any payment or money-moving tool call. Gates the action against a signed mandate and returns a signed, verifiable verdict, so a prompt-injected or hallucinated payment (wrong/lookalike payee, over cap, duplicate invoice) is blocked before money moves. Non-custodial.
+version: 0.1.0
 ---
 
 # Fidacy — the payment firewall for agents
