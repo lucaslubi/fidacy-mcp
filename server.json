@@ -1,38 +1,19 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
   "name": "com.fidacy/mcp",
-  "description": "Payment firewall for AI agents: a signed, independently-verifiable verdict on every money-moving action. Blocks wrong-payee, over-cap, and duplicate-invoice fraud before money moves. Non-custodial, local-first, free.",
-  "repository": {
-    "url": "https://fidacy.com",
-    "source": "website"
-  },
+  "description": "Payment firewall for AI agents: a signed, verifiable verdict on every money-moving action.",
+  "repository": { "url": "https://github.com/lucaslubi/fidacy-mcp", "source": "github" },
   "version": "0.1.9",
   "packages": [
     {
-      "registry_type": "npm",
-      "registry_base_url": "https://registry.npmjs.org",
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "@fidacy/mcp",
       "version": "0.1.9",
-      "transport": {
-        "type": "stdio"
-      },
-      "environment_variables": [
-        {
-          "name": "FIDACY_ENGINE_API_KEY",
-          "description": "Optional: enables signed trust verdicts (assess_action) from the live engine.",
-          "is_required": false,
-          "is_secret": true
-        },
-        {
-          "name": "FIDACY_MODE",
-          "description": "Optional: 'http' to use the hosted paid core (requires FIDACY_API_URL + FIDACY_API_KEY). Defaults to local dev mode.",
-          "is_required": false
-        },
-        {
-          "name": "FIDACY_DISABLE_TELEMETRY",
-          "description": "Optional: set to 1 to disable anonymous usage telemetry.",
-          "is_required": false
-        }
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        { "name": "FIDACY_ENGINE_API_KEY", "description": "Optional: enables signed trust verdicts (assess_action).", "isRequired": false, "isSecret": true },
+        { "name": "FIDACY_MODE", "description": "Optional: 'http' for the hosted paid core.", "isRequired": false }
       ]
     }
   ]
