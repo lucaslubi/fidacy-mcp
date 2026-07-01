@@ -1,0 +1,14 @@
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      FIDACY_ENGINE_API_KEY:
+        type: string
+        description: Optional. Enables signed trust verdicts (assess_action).
+  commandFunction: |
+    (config) => ({
+      command: 'npx',
+      args: ['-y', '@fidacy/mcp'],
+      env: config.FIDACY_ENGINE_API_KEY ? { FIDACY_ENGINE_API_KEY: config.FIDACY_ENGINE_API_KEY } : {}
+    })
