@@ -30,3 +30,11 @@ First release. Fidacy payment firewall as a native OpenClaw plugin:
 
 - Same upgrade micro-trigger system as @fidacy/mcp 0.1.11 (once-per-install,
   value-proven moments only), routed through the fidacy_upgrade tool.
+
+## 0.1.4 — 2026-07-02
+
+- Inherits @fidacy/mcp 0.1.12's restart-durable firewall state: the
+  duplicate-invoice (BEC) guard and the spend cap now rehydrate from the local
+  audit log at boot, so restarting the agent no longer re-opens a paid invoice
+  or resets the running total. Torn-tail audit logs (crash mid-append) are
+  salvaged instead of quarantined.
