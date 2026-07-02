@@ -38,3 +38,9 @@ First release. Fidacy payment firewall as a native OpenClaw plugin:
   audit log at boot, so restarting the agent no longer re-opens a paid invoice
   or resets the running total. Torn-tail audit logs (crash mid-append) are
   salvaged instead of quarantined.
+
+## 0.1.5 — 2026-07-02
+
+- Version sync only: `openclaw.plugin.json` had shipped 0.1.4 with a stale
+  manifest version (Plugin Inspector `package-manifest-version-drift` warning).
+  No code changes over 0.1.4.

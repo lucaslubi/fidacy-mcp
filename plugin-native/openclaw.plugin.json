@@ -2,7 +2,7 @@
   "id": "fidacy",
   "name": "Fidacy \u2014 Payment Firewall",
   "description": "A signed, independently-verifiable verdict on every money-moving agent action. Blocks wrong/lookalike payee, over-cap, and duplicate-invoice fraud before money moves. Non-custodial, local-first, deny-by-default.",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "contracts": {
     "tools": [
       "request_payment",
