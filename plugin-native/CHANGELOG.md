@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 — 2026-07-02
+
+- README: animated demo (BEC lookalike-payee DENY → legit ALLOW with signed
+  grant) for the ClawHub/npm listing. No code changes.
+
 ## 0.1.0 — 2026-07-02
 
 First release. Fidacy payment firewall as a native OpenClaw plugin:

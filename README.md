@@ -1,5 +1,7 @@
 # @fidacy/mcp
 
+![Fidacy blocks a BEC lookalike-payee payment, then allows the legit one with a signed Ed25519 grant](assets/fidacy-firewall-demo.svg)
+
 The action firewall for AI agents. A drop-in MCP server that gates payment
 actions against a cryptographically signed mandate **before** money can move.
 Non-custodial: Fidacy authorizes and proves, it never holds funds.

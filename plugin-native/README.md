@@ -1,5 +1,7 @@
 # @fidacy/openclaw-plugin
 
+![Fidacy blocks a BEC lookalike-payee payment, then allows the legit one with a signed Ed25519 grant](https://raw.githubusercontent.com/lucaslubi/fidacy-mcp/main/assets/fidacy-firewall-demo.svg)
+
 Fidacy payment firewall as a **native OpenClaw plugin**. Registers five agent tools
 in-process (no MCP subprocess, no `npx` spawn):
 

@@ -1,0 +1,61 @@
+<svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+  <!-- Fidacy payment-firewall demo: BEC lookalike-payee DENY, then legit ALLOW.
+       Animated with SMIL (14s loop) so it plays inline on GitHub/ClawHub READMEs. -->
+  <rect x="0" y="0" width="760" height="420" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="759" height="419" fill="none" stroke="#0a0a0a"/>
+
+  <!-- title bar -->
+  <rect x="0" y="0" width="760" height="34" fill="#0a0a0a"/>
+  <text x="16" y="22" font-size="13" fill="#ffffff">fidacy — payment firewall</text>
+  <text x="744" y="22" font-size="12" fill="#9ca3af" text-anchor="end">native OpenClaw plugin · in-process</text>
+
+  <!-- static prompt -->
+  <text x="16" y="60" font-size="13" fill="#6b7280">▸ inbox: Invoice INV-4812 “ACME Supplies” — EUR 1,840.00</text>
+
+  <!-- ══ scene 1: BEC lookalike payee ══ -->
+  <g>
+    <animate attributeName="opacity" calcMode="discrete" values="0;1;0" keyTimes="0;0.036;0.464" dur="14s" repeatCount="indefinite"/>
+    <text x="16" y="92" font-size="13" fill="#0a0a0a">agent: paying INV-4812 → payee <tspan fill="#dc2626">acrne-supplies.inc</tspan>  EUR 1,840.00</text>
+    <text x="16" y="112" font-size="12" fill="#9ca3af">(prompt-injected lookalike payee)</text>
+  </g>
+  <g>
+    <animate attributeName="opacity" calcMode="discrete" values="0;1;0" keyTimes="0;0.107;0.464" dur="14s" repeatCount="indefinite"/>
+    <text x="16" y="144" font-size="13" fill="#0000f2">→ request_payment { payee: "acrne-supplies.inc", amount: 1840, invoiceRef: "INV-4812" }</text>
+  </g>
+  <g>
+    <animate attributeName="opacity" calcMode="discrete" values="0;1;0" keyTimes="0;0.2;0.464" dur="14s" repeatCount="indefinite"/>
+    <rect x="16" y="162" width="728" height="78" fill="#fef2f2" stroke="#dc2626"/>
+    <text x="32" y="188" font-size="14" fill="#dc2626" font-weight="bold">✖ DENY — lookalike_payee: acrne-supplies.inc ≈ acme-supplies</text>
+    <text x="32" y="210" font-size="13" fill="#0a0a0a">no grant issued — the payment is dead on arrival</text>
+    <text x="32" y="230" font-size="12" fill="#6b7280">denial recorded: tamper-evident hash-chained audit · decision 7a0c5bdd…</text>
+  </g>
+
+  <!-- ══ scene 2: legit payee ══ -->
+  <g>
+    <animate attributeName="opacity" calcMode="discrete" values="0;1;0" keyTimes="0;0.5;0.964" dur="14s" repeatCount="indefinite"/>
+    <text x="16" y="92" font-size="13" fill="#0a0a0a">agent: paying INV-4812 → payee <tspan fill="#16a34a">acme-supplies</tspan>  EUR 1,840.00</text>
+    <text x="16" y="112" font-size="12" fill="#9ca3af">(payee on the signed mandate allowlist)</text>
+  </g>
+  <g>
+    <animate attributeName="opacity" calcMode="discrete" values="0;1;0" keyTimes="0;0.571;0.964" dur="14s" repeatCount="indefinite"/>
+    <text x="16" y="144" font-size="13" fill="#0000f2">→ request_payment { payee: "acme-supplies", amount: 1840, invoiceRef: "INV-4812" }</text>
+  </g>
+  <g>
+    <animate attributeName="opacity" calcMode="discrete" values="0;1;0" keyTimes="0;0.664;0.964" dur="14s" repeatCount="indefinite"/>
+    <rect x="16" y="162" width="728" height="78" fill="#f0fdf4" stroke="#16a34a"/>
+    <text x="32" y="188" font-size="14" fill="#16a34a" font-weight="bold">✔ ALLOW — Ed25519 grant issued (single-use, short-lived)</text>
+    <text x="32" y="210" font-size="13" fill="#0a0a0a">grant: eyJhbGciOiJFZERTQSJ9.eyJkZWNpc2lvbklkIjoi…  ← the executor requires this</text>
+    <text x="32" y="230" font-size="12" fill="#6b7280">same invoiceRef twice? the second request is DENIED — at any amount</text>
+  </g>
+  <g>
+    <animate attributeName="opacity" calcMode="discrete" values="0;1;0" keyTimes="0;0.764;0.964" dur="14s" repeatCount="indefinite"/>
+    <text x="16" y="268" font-size="13" fill="#0000f2">anyone can verify the verdict — no trust in Fidacy required:</text>
+    <text x="16" y="288" font-size="13" fill="#0a0a0a">https://api.fidacy.com/.well-known/jwks.json</text>
+  </g>
+
+  <!-- static footer -->
+  <line x1="16" y1="316" x2="744" y2="316" stroke="#e5e7eb"/>
+  <text x="16" y="344" font-size="13" fill="#0a0a0a">5 tools, in-process: request_payment · verify_mandate · get_audit_proof · assess_action · fidacy_upgrade</text>
+  <text x="16" y="368" font-size="13" fill="#6b7280">deny-by-default · local-first · non-custodial — Fidacy authorizes, it never holds funds</text>
+  <text x="16" y="398" font-size="13" fill="#0000f2">openclaw plugins install @fidacy/openclaw-plugin</text>
+</svg>
