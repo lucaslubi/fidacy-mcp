@@ -1,0 +1,63 @@
+{
+  "name": "@fidacy/openclaw-plugin",
+  "version": "0.1.0",
+  "description": "Fidacy payment firewall as a native OpenClaw plugin: signed, verifiable verdicts on every money-moving agent action, in-process (no MCP subprocess).",
+  "license": "Apache-2.0",
+  "homepage": "https://fidacy.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucaslubi/fidacy-mcp.git"
+  },
+  "keywords": [
+    "openclaw",
+    "openclaw-plugin",
+    "payments",
+    "firewall",
+    "mandate",
+    "trust",
+    "verdict",
+    "ed25519",
+    "fidacy"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "openclaw.plugin.json",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "openclaw": {
+    "extensions": ["./dist/index.js"],
+    "compat": {
+      "pluginApi": ">=2026.6.11"
+    },
+    "build": {
+      "openclawVersion": "2026.6.11",
+      "pluginSdkVersion": "2026.6.11"
+    },
+    "install": {
+      "npmSpec": "@fidacy/openclaw-plugin"
+    }
+  },
+  "scripts": {
+    "build": "node scripts/bundle.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@fidacy/firewall": "workspace:*",
+    "@fidacy/mcp": "workspace:*",
+    "@types/node": "^22.10.0",
+    "esbuild": "^0.24.0",
+    "openclaw": "2026.6.11",
+    "typebox": "1.1.39",
+    "typescript": "^5.6.3"
+  }
+}

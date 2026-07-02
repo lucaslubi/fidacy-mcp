@@ -1,0 +1,51 @@
+{
+  "id": "fidacy",
+  "name": "Fidacy — Payment Firewall",
+  "description": "A signed, independently-verifiable verdict on every money-moving agent action. Blocks wrong/lookalike payee, over-cap, and duplicate-invoice fraud before money moves. Non-custodial, local-first, deny-by-default.",
+  "version": "0.1.0",
+  "contracts": {
+    "tools": [
+      "request_payment",
+      "verify_mandate",
+      "get_audit_proof",
+      "assess_action",
+      "fidacy_upgrade"
+    ]
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "engineApiKey": {
+        "type": "string",
+        "description": "Fidacy engine API key (fky_live_/fky_test_) enabling signed verdicts via assess_action. Falls back to FIDACY_ENGINE_API_KEY."
+      },
+      "engineUrl": {
+        "type": "string",
+        "description": "Fidacy engine base URL. Defaults to https://api.fidacy.com (or FIDACY_ENGINE_URL)."
+      },
+      "subject": {
+        "type": "string",
+        "description": "Mandate subject identity for this agent. Defaults to agent:demo (or FIDACY_SUBJECT)."
+      }
+    }
+  },
+  "uiHints": {
+    "engineApiKey": {
+      "label": "Engine API key",
+      "placeholder": "fky_live_...",
+      "sensitive": true,
+      "help": "Optional. Enables signed trust verdicts (assess_action) from the live Fidacy engine."
+    },
+    "engineUrl": {
+      "label": "Engine URL",
+      "placeholder": "https://api.fidacy.com",
+      "advanced": true
+    },
+    "subject": {
+      "label": "Agent subject",
+      "placeholder": "agent:demo",
+      "advanced": true
+    }
+  }
+}
