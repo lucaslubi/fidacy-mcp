@@ -18,3 +18,10 @@ First release. Fidacy payment firewall as a native OpenClaw plugin:
   fallback; `engineApiKey` enables signed verdicts from the live engine.
 - Built against `openclaw@2026.6.11` plugin-sdk types; bundle is self-contained
   (`openclaw/plugin-sdk/*` external, engine inlined).
+
+## 0.1.2 — 2026-07-02
+
+- Telemetry: reports `shell: "openclaw-plugin"` + the plugin's own version, so
+  ClawHub-native adoption is attributable (was indistinguishable from MCP).
+- DENY responses now point to the `fidacy_upgrade` tool.
+- Inherits the self-documenting first-run config + friendlier boot line.

@@ -16,6 +16,7 @@ import {
   autoProvision,
   recordInstall,
   recordAgentActive,
+  setTelemetryShell,
   type FidacyCore,
   type PaymentRequest,
 } from "../../mcp/src/lib.js";
@@ -34,6 +35,9 @@ type FidacyPluginConfig = {
 let core: FidacyCore | undefined;
 function boot(): FidacyCore {
   if (!core) {
+    // Attribute this install to the native-plugin channel BEFORE the first event,
+    // so admin traction can split ClawHub-native vs MCP acquisition.
+    setTelemetryShell("openclaw-plugin");
     const state = ensureState();
     core = makeCore();
     if (state.firstRun) recordInstall();
@@ -106,7 +110,7 @@ export default defineToolPlugin({
         const message =
           d.status === "ALLOW"
             ? `ALLOW (decision ${d.decisionId})${params.invoiceRef ? ` for invoice ${params.invoiceRef}` : ""}. To settle, call the executor with the SAME payee, amount, currency, and idempotencyKey, and set "grant" to EXACTLY this signed value:\n${d.grant}`
-            : `DENY (decision ${d.decisionId}). Rule violated: ${d.violatedRule}. No grant issued, this payment cannot proceed. The denial itself is recorded in the tamper-evident, hash-chained audit: call get_audit_proof with decisionId ${d.decisionId} for the proof of what was blocked.`;
+            : `DENY (decision ${d.decisionId}). Rule violated: ${d.violatedRule}. No grant issued, this payment cannot proceed. The denial itself is recorded in the tamper-evident, hash-chained audit: call get_audit_proof with decisionId ${d.decisionId} for the proof of what was blocked. Fidacy just blocked this for you — for server-signed, anchored proof of every block (free account, local history migrates), call the fidacy_upgrade tool.`;
         return { status: d.status, decisionId: d.decisionId, grant: d.grant, violatedRule: d.violatedRule, message };
       },
     }),

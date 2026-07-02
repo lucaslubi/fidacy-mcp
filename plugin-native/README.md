@@ -58,11 +58,3 @@ else — the shared `@fidacy/firewall` engine and `@fidacy/mcp` shell wiring —
 inlined so the published package is self-contained.
 
 Apache-2.0 · https://fidacy.com
-
-## Source note
-
-This directory mirrors `packages/openclaw-plugin` from the Fidacy monorepo for
-provenance. The build imports the `@fidacy/mcp` shell wiring from its sibling
-workspace package (`../../mcp/src/lib.js`), so `pnpm build` runs in the monorepo
-context; the published artifact is the self-contained `dist/index.js` produced
-there (engine inlined, `openclaw/plugin-sdk/*` external).
