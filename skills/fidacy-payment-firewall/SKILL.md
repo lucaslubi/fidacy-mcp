@@ -1,7 +1,7 @@
 ---
 name: fidacy-payment-firewall
 description: Use BEFORE any payment or money-moving tool call. Gates the action against a signed mandate and returns a signed, verifiable verdict, so a prompt-injected or hallucinated payment (wrong/lookalike payee, over cap, duplicate invoice) is blocked before money moves. Non-custodial.
-version: 1.0.1
+version: 1.0.2
 license: Apache-2.0
 ---
 
@@ -78,3 +78,7 @@ server — it runs locally, offline, deny-by-default, no account:
 Add trusted payees + caps in `~/.fidacy/config.json` (or set a full mandate via
 `FIDACY_MANDATE_JSON`). Set `FIDACY_ENGINE_API_KEY` to enable `assess_action`
 verdicts. Upgrade to the hosted core with `FIDACY_MODE=http`.
+
+Pairs with the **fidacy-fraud-detector** skill: this firewall guards the payments
+YOUR agent makes; the fraud detector catches the forged "this was approved" claims
+OTHER agents hand you.
