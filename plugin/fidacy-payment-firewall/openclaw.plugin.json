@@ -1,0 +1,15 @@
+{
+  "id": "fidacy-payment-firewall",
+  "name": "Fidacy Payment Firewall",
+  "description": "Signed, verifiable verdict on every agent payment. Blocks wrong/lookalike payee, over-cap, and duplicate-invoice fraud. Non-custodial.",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  },
+  "mcp": {
+    "servers": {
+      "fidacy": { "command": "npx", "args": ["-y", "@fidacy/mcp"] }
+    }
+  }
+}
