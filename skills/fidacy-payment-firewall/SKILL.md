@@ -1,10 +1,13 @@
 ---
 name: fidacy-payment-firewall
 description: Use BEFORE any payment or money-moving tool call. Gates the action against a signed mandate and returns a signed, verifiable verdict, so a prompt-injected or hallucinated payment (wrong/lookalike payee, over cap, duplicate invoice) is blocked before money moves. Non-custodial.
-version: 0.1.0
+version: 1.0.1
+license: Apache-2.0
 ---
 
 # Fidacy — the payment firewall for agents
+
+![An invoice is paid with a signed grant; the same invoice re-presented at a higher amount is denied as duplicate_invoice](https://raw.githubusercontent.com/lucaslubi/fidacy-mcp/main/assets/fidacy-skill-demo.svg)
 
 An agent can be prompt-injected or hallucinate into a payment: wrong payee, an
 inflated amount, or the same invoice paid twice. Your own log is not evidence.
@@ -54,7 +57,15 @@ pre-action / tool-execution hook:
 
 ## Setup (one line, free, local-first)
 
-Install the plugin — it runs locally, offline, deny-by-default, no account:
+**On OpenClaw, prefer the native plugin** — same 5 tools, in-process, no MCP
+subprocess:
+
+```
+openclaw plugins install @fidacy/openclaw-plugin
+```
+
+On any other MCP host (Claude Code, Claude Desktop, Hermes…), install the MCP
+server — it runs locally, offline, deny-by-default, no account:
 
 ```json
 {
