@@ -1,0 +1,18 @@
+{
+  "name": "fidacy",
+  "owner": { "name": "Fidacy (Zeepcode Group)", "url": "https://fidacy.com" },
+  "description": "Payment firewall for AI agents — signed, independently verifiable verdicts on every money-moving action. Blocks wrong-payee, over-cap and duplicate-invoice (BEC) fraud before it settles.",
+  "plugins": [
+    {
+      "name": "fidacy-payment-firewall",
+      "source": "./plugin/fidacy-payment-firewall",
+      "description": "Ships the @fidacy/mcp server (request_payment, verify_mandate, get_audit_proof, assess_action, upgrade) plus two skills: the payment firewall doctrine and the Fraud Detector for forged approvals. Free, local-first, deny-by-default, non-custodial.",
+      "version": "1.0.1",
+      "author": { "name": "Fidacy (Zeepcode Group)" },
+      "repository": "https://github.com/lucaslubi/fidacy-mcp",
+      "homepage": "https://fidacy.com",
+      "license": "Apache-2.0",
+      "keywords": ["payments", "security", "firewall", "mcp", "trust", "verdict", "agents"]
+    }
+  ]
+}
