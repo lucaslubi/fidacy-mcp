@@ -1,0 +1,14 @@
+{
+  "name": "fidacy-payment-firewall",
+  "version": "1.0.0",
+  "description": "Payment firewall for AI agents: a signed, verifiable verdict on every money-moving action. Blocks wrong/lookalike payee, over-cap, and duplicate-invoice fraud before it settles. Non-custodial, local-first.",
+  "author": { "name": "Zeepcode Group", "url": "https://fidacy.com" },
+  "homepage": "https://fidacy.com",
+  "license": "Apache-2.0",
+  "keywords": ["mcp", "payments", "security", "firewall", "trust", "verdict", "ed25519", "agents"],
+  "mcp": {
+    "servers": {
+      "fidacy": { "command": "npx", "args": ["-y", "@fidacy/mcp"] }
+    }
+  }
+}

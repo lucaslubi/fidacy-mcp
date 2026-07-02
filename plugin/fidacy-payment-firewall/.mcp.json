@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    "fidacy": { "command": "npx", "args": ["-y", "@fidacy/mcp"] }
+  }
+}
