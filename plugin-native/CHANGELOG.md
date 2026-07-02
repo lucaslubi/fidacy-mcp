@@ -25,3 +25,8 @@ First release. Fidacy payment firewall as a native OpenClaw plugin:
   ClawHub-native adoption is attributable (was indistinguishable from MCP).
 - DENY responses now point to the `fidacy_upgrade` tool.
 - Inherits the self-documenting first-run config + friendlier boot line.
+
+## 0.1.3 — 2026-07-02
+
+- Same upgrade micro-trigger system as @fidacy/mcp 0.1.11 (once-per-install,
+  value-proven moments only), routed through the fidacy_upgrade tool.

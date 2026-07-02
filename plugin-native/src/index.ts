@@ -17,6 +17,7 @@ import {
   recordInstall,
   recordAgentActive,
   setTelemetryShell,
+  decisionNudge,
   type FidacyCore,
   type PaymentRequest,
 } from "../../mcp/src/lib.js";
@@ -107,10 +108,14 @@ export default defineToolPlugin({
         // The grant travels in the structured result AND in the message: the model
         // must present the exact signed value to the executor, or it (correctly)
         // refuses to settle.
-        const message =
+        const base =
           d.status === "ALLOW"
             ? `ALLOW (decision ${d.decisionId})${params.invoiceRef ? ` for invoice ${params.invoiceRef}` : ""}. To settle, call the executor with the SAME payee, amount, currency, and idempotencyKey, and set "grant" to EXACTLY this signed value:\n${d.grant}`
-            : `DENY (decision ${d.decisionId}). Rule violated: ${d.violatedRule}. No grant issued, this payment cannot proceed. The denial itself is recorded in the tamper-evident, hash-chained audit: call get_audit_proof with decisionId ${d.decisionId} for the proof of what was blocked. Fidacy just blocked this for you — for server-signed, anchored proof of every block (free account, local history migrates), call the fidacy_upgrade tool.`;
+            : `DENY (decision ${d.decisionId}). Rule violated: ${d.violatedRule}. No grant issued, this payment cannot proceed. The denial itself is recorded in the tamper-evident, hash-chained audit: call get_audit_proof with decisionId ${d.decisionId} for the proof of what was blocked.`;
+        // Micro-trigger: at most ONE nudge line, only at value-proven moments,
+        // each kind once per install ever (nudges doctrine in @fidacy/mcp).
+        const nudge = decisionNudge(d.status, d.violatedRule, "fidacy_upgrade");
+        const message = nudge ? `${base} ${nudge}` : base;
         return { status: d.status, decisionId: d.decisionId, grant: d.grant, violatedRule: d.violatedRule, message };
       },
     }),
