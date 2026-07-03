@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.9 — 2026-07-03
+
+- New tools: `anchor_artifact` and `check_artifact` (hash-only artifact anchoring
+  on the Bitcoin-checkpointed audit chain; files never leave the machine).
+
 ## 0.1.1 — 2026-07-02
 
 - README: animated demo (BEC lookalike-payee DENY → legit ALLOW with signed

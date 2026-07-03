@@ -22,6 +22,7 @@ import {
   type PaymentRequest,
 } from "../../mcp/src/lib.js";
 import { assessAction, AssessError, type AssessKind } from "../../mcp/src/assess.js";
+import { ARTIFACT_KINDS, anchorArtifact, findArtifacts, hashFile, type ArtifactKind } from "../../mcp/src/artifacts.js";
 
 type FidacyPluginConfig = {
   engineApiKey?: string;
@@ -194,6 +195,109 @@ export default defineToolPlugin({
             throw new Error(`ASSESS ${e.status}: ${e.type}${reasons}`);
           }
           throw new Error("ASSESS failed: unexpected error");
+        }
+      },
+    }),
+
+    // ARTIFACT ANCHORING. Hash-only integrity/existence proof: the file is hashed
+    // locally (streaming) and never uploaded; the SHA-256 joins the same
+    // Bitcoin-checkpointed audit chain as the verdicts. Receipt = offline JWS.
+    tool({
+      name: "anchor_artifact",
+      label: "Anchor Artifact (Bitcoin-anchored integrity proof)",
+      description:
+        "Prove an artifact existed exactly as-is at this moment, and make any later tampering detectable. Give a file `path` (hashed locally with SHA-256 — the file itself is NEVER uploaded) or a precomputed `sha256`. The hash is registered on Fidacy's tamper-evident audit chain, which is checkpointed to the Bitcoin blockchain, and you get a signed receipt (JWS) verifiable offline against the engine JWKS. Use it for contracts, invoices, medical prescriptions, insurance claims, images, audio, video. `kind` defaults to document; optional `label` is a short reference (no PII).",
+      parameters: Type.Object({
+        path: Type.Optional(Type.String()),
+        sha256: Type.Optional(Type.String({ pattern: "^[0-9a-f]{64}$" })),
+        kind: Type.Optional(Type.Union(ARTIFACT_KINDS.map((k) => Type.Literal(k)))),
+        label: Type.Optional(Type.String({ maxLength: 120 })),
+        subject: Type.Optional(Type.String({ maxLength: 120 })),
+      }),
+      async execute(params, config) {
+        boot();
+        const engineUrl = config.engineUrl ?? process.env.FIDACY_ENGINE_URL ?? "https://api.fidacy.com";
+        const apiKey = (config.engineApiKey ?? process.env.FIDACY_ENGINE_API_KEY ?? "").trim();
+        if (!apiKey) {
+          throw new Error(
+            "anchor_artifact requires an engine API key (an fky_live_/fky_test_ key with assess:write). Set plugins.entries.fidacy.config.engineApiKey or FIDACY_ENGINE_API_KEY.",
+          );
+        }
+        if (!params.path && !params.sha256) {
+          throw new Error("Give a file `path` (hashed locally) or a precomputed `sha256`.");
+        }
+        let hash = params.sha256 ?? "";
+        if (!hash && params.path) {
+          try {
+            hash = await hashFile(params.path);
+          } catch {
+            throw new Error("Could not read that file locally (check the path and permissions). Nothing was sent anywhere.");
+          }
+        }
+        try {
+          const r = await anchorArtifact(
+            { sha256: hash, kind: (params.kind as ArtifactKind | undefined) ?? "document", ...(params.label ? { label: params.label } : {}), ...(params.subject ? { subject: params.subject } : {}) },
+            { engineUrl, apiKey },
+          );
+          return {
+            summary: `ANCHORED ${r.kind} · sha256 ${hash.slice(0, 16)}… · audit seq ${r.audit.seq} · Bitcoin checkpoint: ${r.anchor.status}. The file never left this machine.`,
+            ...r,
+          };
+        } catch (e) {
+          if (e instanceof AssessError) throw new Error(`ANCHOR ${e.status}: ${e.type}`);
+          throw new Error("ANCHOR failed: unexpected error");
+        }
+      },
+    }),
+
+    // Verification half: was this exact content anchored, and did it reach Bitcoin?
+    tool({
+      name: "check_artifact",
+      label: "Check Artifact (was this hash anchored?)",
+      description:
+        "Check whether an artifact was anchored by this account and the state of its Bitcoin checkpoint. Give a file `path` (hashed locally, never uploaded) or a `sha256`. If the current hash of a file does NOT match an anchored record you expected, the file changed since anchoring — that is the tampering signal.",
+      parameters: Type.Object({
+        path: Type.Optional(Type.String()),
+        sha256: Type.Optional(Type.String({ pattern: "^[0-9a-f]{64}$" })),
+      }),
+      async execute(params, config) {
+        boot();
+        const engineUrl = config.engineUrl ?? process.env.FIDACY_ENGINE_URL ?? "https://api.fidacy.com";
+        const apiKey = (config.engineApiKey ?? process.env.FIDACY_ENGINE_API_KEY ?? "").trim();
+        if (!apiKey) {
+          throw new Error(
+            "check_artifact requires an engine API key. Set plugins.entries.fidacy.config.engineApiKey or FIDACY_ENGINE_API_KEY.",
+          );
+        }
+        if (!params.path && !params.sha256) {
+          throw new Error("Give a file `path` (hashed locally) or a `sha256`.");
+        }
+        let hash = params.sha256 ?? "";
+        if (!hash && params.path) {
+          try {
+            hash = await hashFile(params.path);
+          } catch {
+            throw new Error("Could not read that file locally (check the path and permissions). Nothing was sent anywhere.");
+          }
+        }
+        try {
+          const r = await findArtifacts(hash, { engineUrl, apiKey });
+          if (!r.artifacts.length) {
+            return {
+              summary: `NOT FOUND · sha256 ${hash.slice(0, 16)}… has no anchored record in this account. If you expected a match, the file changed since anchoring.`,
+              sha256: hash,
+              artifacts: [],
+            };
+          }
+          const first = r.artifacts[0] as Record<string, unknown>;
+          return {
+            summary: `FOUND ${r.artifacts.length} record(s) · newest: ${String(first.kind)} anchored ${String(first.createdAt)} (audit seq ${String(first.auditSeq)}). Content matches the anchored hash byte for byte.`,
+            sha256: hash,
+            ...r,
+          };
+        } catch (e) {
+          if (e instanceof AssessError) throw new Error(`CHECK ${e.status}: ${e.type}`);
+          throw new Error("CHECK failed: unexpected error");
         }
       },
     }),
