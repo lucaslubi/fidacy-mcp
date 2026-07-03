@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.10 — 2026-07-03
+
+- Artifact tools gain the `conversation` kind (chatbot session digests via
+  `@fidacy/session`, conversation receipts).
+
 ## 0.1.9 — 2026-07-03
 
 - New tools: `anchor_artifact` and `check_artifact` (hash-only artifact anchoring

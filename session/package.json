@@ -1,0 +1,48 @@
+{
+  "name": "@fidacy/session",
+  "version": "0.1.0",
+  "description": "Conversation receipts for AI chatbots: hash every message into a tamper-evident session digest (locally, content never leaves your infrastructure), anchor it to Bitcoin via Fidacy at session close, and hand both sides a verifiable receipt.",
+  "license": "Apache-2.0",
+  "homepage": "https://fidacy.com/verify",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucaslubi/fidacy-mcp.git"
+  },
+  "keywords": [
+    "ai",
+    "chatbot",
+    "conversation",
+    "receipt",
+    "audit",
+    "integrity",
+    "bitcoin",
+    "anchoring",
+    "tamper-evident",
+    "fidacy"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.9"
+  }
+}
