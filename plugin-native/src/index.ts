@@ -112,7 +112,11 @@ export default defineToolPlugin({
         const base =
           d.status === "ALLOW"
             ? `ALLOW (decision ${d.decisionId})${params.invoiceRef ? ` for invoice ${params.invoiceRef}` : ""}. To settle, call the executor with the SAME payee, amount, currency, and idempotencyKey, and set "grant" to EXACTLY this signed value:\n${d.grant}`
-            : `DENY (decision ${d.decisionId}). Rule violated: ${d.violatedRule}. No grant issued, this payment cannot proceed. The denial itself is recorded in the tamper-evident, hash-chained audit: call get_audit_proof with decisionId ${d.decisionId} for the proof of what was blocked.`;
+            : `DENY (decision ${d.decisionId}). Rule violated: ${d.violatedRule}. No grant issued, this payment cannot proceed. The denial itself is recorded in the tamper-evident, hash-chained audit: call get_audit_proof with decisionId ${d.decisionId} for the proof of what was blocked.${
+                d.violatedRule?.startsWith("payee_not_in_allowlist")
+                  ? ` If the user trusts this payee, add "${params.payee}" to mandate.payees in ~/.fidacy/config.json and retry: the firewall picks the change up on the next call, no restart needed.`
+                  : ""
+              }`;
         // Micro-trigger: at most ONE nudge line, only at value-proven moments,
         // each kind once per install ever (nudges doctrine in @fidacy/mcp).
         const nudge = decisionNudge(d.status, d.violatedRule, "fidacy_upgrade");

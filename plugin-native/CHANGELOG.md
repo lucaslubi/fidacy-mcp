@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.11 — 2026-07-03
+
+- Config hot-reload (shared core) + actionable `payee_not_in_allowlist` DENY.
+
 ## 0.1.10 — 2026-07-03
 
 - Artifact tools gain the `conversation` kind (chatbot session digests via

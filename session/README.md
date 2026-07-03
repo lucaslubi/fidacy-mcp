@@ -25,6 +25,14 @@ hospitals and insurers.
 npm i @fidacy/session
 ```
 
+## Get a key (one minute, free)
+
+Anchoring needs a Fidacy engine API key (`fky_live_…`/`fky_test_…`) with the
+`assess:write` scope. Sign up free at
+[app.fidacy.com](https://app.fidacy.com/signup), open API keys, mint one, and
+export it as `FIDACY_ENGINE_API_KEY`. Everything below the anchor call
+(hashing, digests, offline verification) works with no key at all.
+
 ## Use
 
 ```ts
