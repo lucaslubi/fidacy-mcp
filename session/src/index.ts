@@ -13,7 +13,8 @@
 //
 // Secret safety: the API key is never logged or attached to an error.
 
-import { createHash } from "node:crypto";
+import { sha256 } from "@noble/hashes/sha2.js";
+import { bytesToHex } from "@noble/hashes/utils.js";
 
 export type Role = "user" | "assistant" | "system" | "tool";
 
@@ -56,8 +57,11 @@ export interface AnchorReceipt {
 
 const GENESIS = "fidacy.session.v1";
 
+// Isomorphic SHA-256 (Node, browser, edge, Deno) via @noble/hashes — the digest
+// recipe must recompute anywhere a consumer holds a receipt, including in the
+// browser. Byte-identical to node:crypto's sha256.
 function sha256Hex(input: string): string {
-  return createHash("sha256").update(input, "utf8").digest("hex");
+  return bytesToHex(sha256(new TextEncoder().encode(input)));
 }
 
 /**

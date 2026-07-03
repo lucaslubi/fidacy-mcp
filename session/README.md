@@ -73,6 +73,10 @@ API: `GET https://api.fidacy.com/v1/verify/artifact?sha256=<hex>`. The signed
 receipt verifies against the engine JWKS at
 `https://api.fidacy.com/.well-known/jwks.json`.
 
+Hashing is **isomorphic** (Node, browser, edge, Deno) via `@noble/hashes`, so
+`digestTranscript` recomputes the same hash wherever a consumer holds the
+transcript — including in the browser.
+
 Changing one character of one message, reordering two messages, or dropping a
 message produces a different digest. That mismatch is the tampering signal.
 

@@ -1,6 +1,6 @@
 {
   "name": "@fidacy/session",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Conversation receipts for AI chatbots: hash every message into a tamper-evident session digest (locally, content never leaves your infrastructure), anchor it to Bitcoin via Fidacy at session close, and hand both sides a verifiable receipt.",
   "license": "Apache-2.0",
   "homepage": "https://fidacy.com/verify",
@@ -23,6 +23,13 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "files": [
     "dist",
     "README.md",
@@ -44,5 +51,8 @@
     "@types/node": "^22.10.0",
     "typescript": "^5.7.2",
     "vitest": "^2.1.9"
+  },
+  "dependencies": {
+    "@noble/hashes": "^2.2.0"
   }
 }
