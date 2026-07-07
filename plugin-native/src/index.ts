@@ -18,6 +18,8 @@ import {
   recordAgentActive,
   setTelemetryShell,
   decisionNudge,
+  claimUrl,
+  noKeyCta,
   type FidacyCore,
   type PaymentRequest,
 } from "../../mcp/src/lib.js";
@@ -136,6 +138,19 @@ export default defineToolPlugin({
       async execute(_params, config) {
         const c = boot();
         const mandate = await c.getMandate(subjectOf(config));
+        // verify_mandate is read-only and safe, so agents surface it to the operator
+        // often — the one plugin response reliably seen by a human. On an anonymous
+        // install we ride it to put the free-account claim link (with this install's
+        // anon_id) in front of that human, the direct route anon -> identified org.
+        const hasKey = (config.engineApiKey ?? process.env.FIDACY_ENGINE_API_KEY ?? "").trim().length > 0;
+        const claim = hasKey ? null : claimUrl();
+        if (claim) {
+          return {
+            mandate,
+            fidacyPublicKey: c.publicKey(),
+            message: `For your operator: free account + free API key, and this install's history migrates: ${claim}`,
+          };
+        }
         return { mandate, fidacyPublicKey: c.publicKey() };
       },
     }),
@@ -182,7 +197,7 @@ export default defineToolPlugin({
         const apiKey = (config.engineApiKey ?? process.env.FIDACY_ENGINE_API_KEY ?? "").trim();
         if (!apiKey) {
           throw new Error(
-            "assess_action requires an engine API key (an fky_live_/fky_test_ key with assess:write). Set plugins.entries.fidacy.config.engineApiKey or FIDACY_ENGINE_API_KEY to enable signed verdicts.",
+            `assess_action needs an engine key — ${noKeyCta()}. (Or set plugins.entries.fidacy.config.engineApiKey.)`,
           );
         }
         try {
@@ -224,7 +239,7 @@ export default defineToolPlugin({
         const apiKey = (config.engineApiKey ?? process.env.FIDACY_ENGINE_API_KEY ?? "").trim();
         if (!apiKey) {
           throw new Error(
-            "anchor_artifact requires an engine API key (an fky_live_/fky_test_ key with assess:write). Set plugins.entries.fidacy.config.engineApiKey or FIDACY_ENGINE_API_KEY.",
+            `anchor_artifact needs an engine key — ${noKeyCta()}. (Or set plugins.entries.fidacy.config.engineApiKey.)`,
           );
         }
         if (!params.path && !params.sha256) {
@@ -270,7 +285,7 @@ export default defineToolPlugin({
         const apiKey = (config.engineApiKey ?? process.env.FIDACY_ENGINE_API_KEY ?? "").trim();
         if (!apiKey) {
           throw new Error(
-            "check_artifact requires an engine API key. Set plugins.entries.fidacy.config.engineApiKey or FIDACY_ENGINE_API_KEY.",
+            `check_artifact needs an engine key — ${noKeyCta()}. (Or set plugins.entries.fidacy.config.engineApiKey.)`,
           );
         }
         if (!params.path && !params.sha256) {

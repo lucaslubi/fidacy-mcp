@@ -1,6 +1,6 @@
 {
   "name": "@fidacy/openclaw-plugin",
-  "version": "0.1.11",
+  "version": "0.1.16",
   "description": "Fidacy payment firewall as a native OpenClaw plugin: signed, verifiable verdicts on every money-moving agent action, in-process (no MCP subprocess).",
   "license": "Apache-2.0",
   "homepage": "https://fidacy.com",

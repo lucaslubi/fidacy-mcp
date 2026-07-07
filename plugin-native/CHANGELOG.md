@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.16 — 2026-07-07
+
+- Ativacao: link de claim (conta gratis + API key gratis) no verify_mandate e nos erros de no-key; nudge pos-block lidera com "free account + free API key". Alinha com @fidacy/mcp 0.1.25.
+
 ## 0.1.11 — 2026-07-03
 
 - Config hot-reload (shared core) + actionable `payee_not_in_allowlist` DENY.
