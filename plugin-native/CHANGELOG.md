@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.17 - 2026-07-07
+
+- Rastreamento: telemetria de install/agent_active agora dispara no LOAD do plugin (factory de tools, ativacao real), nao mais so na 1a chamada de tool. Antes, quem carregava o plugin sem invocar tool reportava zero no canal openclaw-plugin. makeCore continua lazy.
+
 ## 0.1.16 — 2026-07-07
 
 - Ativacao: link de claim (conta gratis + API key gratis) no verify_mandate e nos erros de no-key; nudge pos-block lidera com "free account + free API key". Alinha com @fidacy/mcp 0.1.25.

@@ -32,22 +32,33 @@ type FidacyPluginConfig = {
   subject?: string;
 };
 
-// Lazy boot: first-run state, telemetry heartbeat, and background auto-provision
-// run on the FIRST fidacy tool call, not at plugin load — plugin load must stay
-// cheap (manifest inspection and startup never pay for our fs/network work).
-// Mirrors the @fidacy/mcp boot path; autoProvision is fire-and-forget by design.
+// PLUGIN LOAD. Runs from the tools factory below, which the OpenClaw SDK invokes
+// "at plugin startup" (when the host actually loads the plugin into a session).
+// This is the plugin's equivalent of the MCP process-start: attribute the channel,
+// record the install/active telemetry, and kick off the background free-key
+// provision — so a LOADED install counts even if the agent never calls a Fidacy
+// tool. This previously lived in the lazy boot() (first tool call), so a plugin
+// that loaded but was never invoked reported ZERO (the openclaw-plugin telemetry
+// channel stayed empty despite real installs). Idempotent + best-effort: the fs
+// touch is one small config read and the network calls are fire-and-forget.
+let loaded = false;
+function onPluginLoad(): void {
+  if (loaded) return;
+  loaded = true;
+  setTelemetryShell("openclaw-plugin");
+  const state = ensureState();
+  if (state.firstRun) recordInstall();
+  recordAgentActive();
+  void autoProvision();
+}
+
+// The heavy engine stays lazy: makeCore() is built on the FIRST tool call, never at
+// load. boot() also calls onPluginLoad() so telemetry is never missed if a tool
+// somehow executes before the factory-load path ran.
 let core: FidacyCore | undefined;
 function boot(): FidacyCore {
-  if (!core) {
-    // Attribute this install to the native-plugin channel BEFORE the first event,
-    // so admin traction can split ClawHub-native vs MCP acquisition.
-    setTelemetryShell("openclaw-plugin");
-    const state = ensureState();
-    core = makeCore();
-    if (state.firstRun) recordInstall();
-    recordAgentActive();
-    void autoProvision();
-  }
+  onPluginLoad();
+  if (!core) core = makeCore();
   return core;
 }
 
@@ -83,7 +94,11 @@ export default defineToolPlugin({
     },
     { additionalProperties: false },
   ),
-  tools: (tool) => [
+  tools: (tool) => {
+    // The OpenClaw SDK calls this factory at plugin load (real activation), so we
+    // fire the load-time install/active telemetry here, then return the tools.
+    onPluginLoad();
+    return [
     // ACTION FIREWALL. The agent calls this INSTEAD of any raw payment tool.
     // ALLOW returns a short-lived Ed25519 grant the executor requires; DENY
     // returns no grant: the action is dead on arrival.
@@ -338,5 +353,6 @@ export default defineToolPlugin({
         };
       },
     }),
-  ],
+    ];
+  },
 });
