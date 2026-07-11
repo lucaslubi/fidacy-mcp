@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.18 - 2026-07-09
+
+- Funil: upgrade tool aponta pro claim (era rota inexistente), nudge no 1o ALLOW, claim link nas instructions do MCP. Herdado do @fidacy/mcp 0.1.26.
+
 ## 0.1.17 - 2026-07-07
 
 - Rastreamento: telemetria de install/agent_active agora dispara no LOAD do plugin (factory de tools, ativacao real), nao mais so na 1a chamada de tool. Antes, quem carregava o plugin sem invocar tool reportava zero no canal openclaw-plugin. makeCore continua lazy.
