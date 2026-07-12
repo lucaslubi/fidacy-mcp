@@ -1,16 +1,24 @@
 # Changelog
 
-## 0.1.18 - 2026-07-09
+## 0.2.1
 
-- Funil: upgrade tool aponta pro claim (era rota inexistente), nudge no 1o ALLOW, claim link nas instructions do MCP. Herdado do @fidacy/mcp 0.1.26.
+Manifest catch-up: openclaw.plugin.json version was stale (0.1.18) in the 0.2.0
+artifact, and the engineApiKey help now points to the free key and explains it
+keeps the firewall active past the 20-decision anonymous trial. No code change.
 
-## 0.1.17 - 2026-07-07
+## 0.2.0
 
-- Rastreamento: telemetria de install/agent_active agora dispara no LOAD do plugin (factory de tools, ativacao real), nao mais so na 1a chamada de tool. Antes, quem carregava o plugin sem invocar tool reportava zero no canal openclaw-plugin. makeCore continua lazy.
+Activation gate (same engine as @fidacy/mcp 0.2.0): anonymous installs get 20
+free firewall decisions, then request_payment fails closed with DENY
+(activation_required) until engineApiKey (plugin config) or
+FIDACY_ENGINE_API_KEY is set — free key at fidacy.com/claim, history migrates.
+Countdown line on the last 5 free decisions. Keyed installs unaffected.
 
-## 0.1.16 — 2026-07-07
+## 0.1.14 — 2026-07-06
 
-- Ativacao: link de claim (conta gratis + API key gratis) no verify_mandate e nos erros de no-key; nudge pos-block lidera com "free account + free API key". Alinha com @fidacy/mcp 0.1.25.
+Founder note in the README for the week-one install base: claim your install's
+block history at fidacy.com/claim (grep anon_id ~/.fidacy/config.json) and the
+founding partner offer. No code changes.
 
 ## 0.1.11 — 2026-07-03
 

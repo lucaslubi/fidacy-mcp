@@ -20,6 +20,8 @@ import {
   decisionNudge,
   claimUrl,
   noKeyCta,
+  activationGate,
+  trialCountdownLine,
   type FidacyCore,
   type PaymentRequest,
 } from "../../mcp/src/lib.js";
@@ -122,6 +124,13 @@ export default defineToolPlugin({
         ),
       }),
       async execute(params, config) {
+        // ACTIVATION GATE: the anonymous trial is over and no operator key is
+        // set (plugin config or env). Fail closed and hand the agent the
+        // activation route to relay to its human.
+        const gate = activationGate(config.engineApiKey);
+        if (gate) {
+          return { status: "DENY", decisionId: "activation_required", violatedRule: "activation_required", message: gate.message };
+        }
         const d = await boot().decide(params as PaymentRequest, subjectOf(config));
         // The grant travels in the structured result AND in the message: the model
         // must present the exact signed value to the executor, or it (correctly)
@@ -137,7 +146,10 @@ export default defineToolPlugin({
         // Micro-trigger: at most ONE nudge line, only at value-proven moments,
         // each kind once per install ever (nudges doctrine in @fidacy/mcp).
         const nudge = decisionNudge(d.status, d.violatedRule, "fidacy_upgrade");
-        const message = nudge ? `${base} ${nudge}` : base;
+        // Trial countdown: once 5 or fewer free anonymous decisions remain,
+        // EVERY response says so (a fair wall is announced, not sprung).
+        const countdown = trialCountdownLine(config.engineApiKey);
+        const message = [base, nudge, countdown].filter(Boolean).join(" ");
         return { status: d.status, decisionId: d.decisionId, grant: d.grant, violatedRule: d.violatedRule, message };
       },
     }),

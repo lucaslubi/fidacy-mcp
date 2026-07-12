@@ -3,7 +3,7 @@
   "name": "Fidacy — Payment Firewall",
   "description": "A signed, independently-verifiable verdict on every money-moving agent action. Blocks wrong/lookalike payee, over-cap, and duplicate-invoice fraud before money moves. Non-custodial, local-first, deny-by-default.",
   "icon": "https://fidacy.com/logo.png",
-  "version": "0.1.18",
+  "version": "0.2.1",
   "contracts": {
     "tools": [
       "request_payment",
@@ -38,7 +38,7 @@
       "label": "Engine API key",
       "placeholder": "fky_live_...",
       "sensitive": true,
-      "help": "Optional. Enables signed trust verdicts (assess_action) from the live Fidacy engine."
+      "help": "Free key at app.fidacy.com/signup. Enables signed trust verdicts (assess_action) and keeps the firewall active past the 20-decision anonymous trial."
     },
     "engineUrl": {
       "label": "Engine URL",
