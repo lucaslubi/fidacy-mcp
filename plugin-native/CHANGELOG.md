@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2
+
+README: a Security and privacy section answering the ClawHub audit point by
+point (telemetry and provisioning opt-outs, local state paths, what
+FIDACY_SIGNING_KEY_B64 is, no hardcoded secrets in the bundle). No code change.
+
 ## 0.2.1
 
 Manifest catch-up: openclaw.plugin.json version was stale (0.1.18) in the 0.2.0

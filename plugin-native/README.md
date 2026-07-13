@@ -70,6 +70,30 @@ the free key is set. Claim an anonymous install's history:
 
 Verify any verdict yourself: https://api.fidacy.com/.well-known/jwks.json
 
+## Security and privacy, point by point
+
+This is a payment-control plugin, so audit it like one. What it actually does:
+
+- **Network calls it makes:** anonymous usage telemetry to `api.fidacy.com/v1/telemetry`
+  (an install UUID plus event enums; never payee, amount, currency, or content) and a
+  background free-key provision to `/v1/provision`. Both are opt-out:
+  `FIDACY_DISABLE_TELEMETRY=1` and `FIDACY_DISABLE_PROVISION=1`. Neither is ever on
+  the decision path; payment gating works fully offline.
+- **Local state:** `~/.fidacy/config.json` (0600; anon id, tier, your mandate rules)
+  and `~/.fidacy/audit/audit.log` (the hash-chained decision log). Nothing else.
+- **`FIDACY_SIGNING_KEY_B64`:** an OPTIONAL env var the operator sets to pin a
+  stable local Ed25519 signing key for grants. If unset, a per-session key is
+  generated. The plugin reads it; it never writes or transmits it.
+- **API keys:** read from your plugin config (`engineApiKey`) or the
+  `FIDACY_ENGINE_API_KEY` env var, sent only to your configured engine URL
+  (default `api.fidacy.com`) as a bearer token. There are no hardcoded keys or
+  secrets in the published bundle; scanner hits on those lines are pattern matches
+  on the env/config reads above, and you can verify yourself: the bundle is
+  unminified on npm and mirrored at github.com/lucaslubi/fidacy-mcp (plugin-native/).
+- **Verify our signatures, not our word:** every verdict checks against the public
+  JWKS at `api.fidacy.com/.well-known/jwks.json` with the open-source
+  [`@fidacy/verify`](https://www.npmjs.com/package/@fidacy/verify).
+
 ## Prefer MCP instead?
 
 If you'd rather run Fidacy as an MCP server (out-of-process), use
