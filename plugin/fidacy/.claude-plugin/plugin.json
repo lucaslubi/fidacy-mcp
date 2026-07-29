@@ -1,0 +1,10 @@
+{
+  "name": "fidacy",
+  "version": "0.2.0",
+  "description": "Firewall for AI agents. Watches every action the agent takes, hands you a session report, and ends it in a digest anyone can recompute. Commands, paths and arguments never leave your machine.",
+  "author": { "name": "Fidacy (Zeepcode Group)", "url": "https://fidacy.com" },
+  "homepage": "https://fidacy.com",
+  "repository": "https://github.com/lucaslubi/fidacy-mcp",
+  "license": "Apache-2.0",
+  "keywords": ["security", "firewall", "observability", "audit", "agents", "payments", "verdict"]
+}

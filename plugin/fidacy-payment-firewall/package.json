@@ -5,13 +5,26 @@
   "license": "Apache-2.0",
   "homepage": "https://fidacy.com",
   "openclaw": {
-    "compat": { "pluginApi": ">=2026.5.27" },
-    "build": { "openclawVersion": "2026.5.27" },
-    "install": { "clawhubSpec": "fidacy-payment-firewall@1.0.0" }
+    "compat": {
+      "pluginApi": ">=2026.5.27"
+    },
+    "build": {
+      "openclawVersion": "2026.5.27"
+    },
+    "install": {
+      "clawhubSpec": "fidacy-payment-firewall@1.0.0"
+    }
   },
   "mcp": {
     "servers": {
-      "fidacy": { "command": "npx", "args": ["-y", "@fidacy/mcp"] }
+      "fidacy": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@fidacy/mcp"
+        ]
+      }
     }
-  }
+  },
+  "type": "module"
 }

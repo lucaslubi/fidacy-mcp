@@ -1,0 +1,28 @@
+{
+  "description": "Fidacy observer: every agent action counted locally, the session ending in a verifiable digest",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "_R=\"${CLAUDE_PLUGIN_ROOT}\"; [ -n \"$_R\" ] && node \"$_R/scripts/hook.js\" || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "_R=\"${CLAUDE_PLUGIN_ROOT}\"; [ -n \"$_R\" ] && node \"$_R/scripts/hook.js\" || true",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
