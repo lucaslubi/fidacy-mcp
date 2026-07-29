@@ -1,31 +1,36 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "com.fidacy/mcp",
-  "description": "Payment firewall for AI agents: a signed, verifiable verdict on every money-moving action.",
+  "name": "com.fidacy/ai-agent-firewall",
+  "description": "Every agent action watched, every money-moving one gated, every verdict independently verifiable.",
   "repository": {
     "url": "https://github.com/lucaslubi/fidacy-mcp",
     "source": "github"
   },
-  "version": "0.1.12",
+  "version": "0.7.1",
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "@fidacy/mcp",
-      "version": "0.1.12",
+      "version": "0.7.1",
       "transport": {
         "type": "stdio"
       },
       "environmentVariables": [
         {
           "name": "FIDACY_ENGINE_API_KEY",
-          "description": "Optional: enables signed trust verdicts (assess_action).",
+          "description": "Optional: enables signed trust verdicts (assess_action) and anchors session digests.",
           "isRequired": false,
           "isSecret": true
         },
         {
+          "name": "FIDACY_OPERATOR_EMAIL",
+          "description": "Optional and opt-in: registers this install so the operator can claim its history.",
+          "isRequired": false
+        },
+        {
           "name": "FIDACY_MODE",
-          "description": "Optional: 'http' for the hosted paid core.",
+          "description": "Optional: 'http' for the hosted core.",
           "isRequired": false
         }
       ]
