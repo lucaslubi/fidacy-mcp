@@ -1,0 +1,26 @@
+name: Smoke test
+
+# O que este CI protege: o ARTEFATO PUBLICADO. Um host instala @fidacy/mcp do
+# npm e fala MCP por stdio; se um publish quebrar o bin, o handshake ou o
+# contrato das tools, o cliente descobre antes de nos. Roda todo dia porque
+# publish quebrado nao espera push.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install the published package
+        run: npm install -g @fidacy/mcp@latest
+      - name: MCP handshake and tool contract
+        run: node .github/smoke.mjs
