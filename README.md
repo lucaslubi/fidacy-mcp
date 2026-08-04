@@ -1,5 +1,7 @@
 # @fidacy/mcp
 
+[![fidacy-mcp MCP server](https://glama.ai/mcp/servers/lucaslubi/fidacy-mcp/badges/score.svg)](https://glama.ai/mcp/servers/lucaslubi/fidacy-mcp)
+
 ![Fidacy blocks a BEC lookalike-payee payment, then allows the legit one with a signed Ed25519 grant](assets/fidacy-firewall-demo.svg)
 
 The action firewall for AI agents. A drop-in MCP server that gates payment
